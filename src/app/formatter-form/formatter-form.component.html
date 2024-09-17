@@ -1,0 +1,41 @@
+<!-- primeng form with 5 textareas -->
+<div class="container">
+  <h1>Formatter</h1>
+  <form>
+    <div class="field" *ngFor="let row of formConfig.rows">
+      <p-checkbox
+        [(ngModel)]="row.isIncluded"
+        [binary]="true"
+        inputId="{{ row.isIncludedId }}"
+        [ngModelOptions]="{ standalone: true }"
+        (onChange)="modelChanged()"
+      />
+      <ng-container *ngIf="row.content.fieldType === 'textarea'">
+        <textarea
+          pInputTextarea
+          rows="10"
+          class="w-full"
+          name="{{ row.id }}"
+          id="{{ row.id }}"
+          [(ngModel)]="row.content.value"
+          [disabled]="!row.isIncluded"
+          (change)="modelChanged()"
+        ></textarea>
+      </ng-container>
+      <ng-container *ngIf="row.content.fieldType === 'text'">
+        <input
+          class="w-full"
+          name="{{ row.id }}"
+          pInputText
+          id="{{ row.id }}"
+          [(ngModel)]="row.content.value"
+          [disabled]="!row.isIncluded"
+          (change)="modelChanged()"
+        />
+      </ng-container>
+    </div>
+  </form>
+</div>
+<pre>
+  {{ formConfig | json }}
+</pre>
