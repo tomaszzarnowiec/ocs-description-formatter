@@ -3,13 +3,21 @@
   <h1>Formatter</h1>
   <form>
     <div class="field" *ngFor="let row of formConfig.rows">
-      <p-checkbox
-        [(ngModel)]="row.isIncluded"
-        [binary]="true"
-        inputId="{{ row.isIncludedId }}"
-        [ngModelOptions]="{ standalone: true }"
-        (onChange)="modelChanged()"
-      />
+      <div>
+        <p-checkbox
+          [(ngModel)]="row.isIncluded"
+          [binary]="true"
+          inputId="{{ row.isIncludedId }}"
+          [ngModelOptions]="{ standalone: true }"
+          (onChange)="modelChanged()"
+          class="mb-3"
+        />
+        <p-button
+          icon="pi pi-trash"
+          size="small"
+          (onClick)="removeSection(row)"
+        ></p-button>
+      </div>
       <ng-container *ngIf="row.content.fieldType === 'textarea'">
         <textarea
           pInputTextarea
@@ -33,9 +41,34 @@
           (change)="modelChanged()"
         />
       </ng-container>
+      <ng-container *ngIf="row.content.fieldType === 'list'">
+        <input
+          class="w-full"
+          name="{{ row.id }}"
+          pInputText
+          id="{{ row.id }}"
+          [(ngModel)]="row.content.value"
+          [disabled]="!row.isIncluded"
+          (change)="modelChanged()"
+        />
+      </ng-container>
     </div>
   </form>
 </div>
-<pre>
+<div>
+  <p-button class="mr-3" (onClick)="addSection(rowType.HEADER, fieldType.TEXT)">
+    Dodaj nagłówek
+  </p-button>
+  <p-button
+    class="mr-3"
+    (onClick)="addSection(rowType.PARAGRAPH, fieldType.TEXTAREA)"
+  >
+    Dodaj paragraf
+  </p-button>
+  <p-button (onClick)="addSection(rowType.LIST, fieldType.TEXTAREA)">
+    Dodaj listę
+  </p-button>
+</div>
+<!-- <pre>
   {{ formConfig | json }}
-</pre>
+</pre> -->
